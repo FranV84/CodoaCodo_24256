@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Via Láctea</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <nav id="navbar">
+      <div class="navbar-links">
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="Contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+
+    </nav>
+
+  <div class="container">
+    <div class="showcase-wrap">
+
+    <!-- Area Contacto -->
+    <div class="AboutArea">
+      <div class="aboutWrap">
+        <h1 class="l-heading">Contacto</h1>
+        <p style="margin-top: 1rem">
+          Si tenes alguna pregunta, no dudes en contactarme.
+        </p>
+        <br />
+      </div>
+    </div>
+    
+    <!-- Form -->
+    <form id="contactForm">
+      <label for="name">Nombre:</label>
+      <input type="text" id="name" name="name" required>
+      <div id="nameError" class="error"></div>
+      <br />
+      <label for="email">Correo electrónico:</label>
+      <input type="email" id="email" name="email" required>
+      <div id="emailError" class="error"></div>
+      <br />
+      <label for="message">Mensaje:</label>
+      <textarea id="message" name="message" required></textarea>
+      <div id="messageError" class="error"></div>
+      <br />
+      <label for="topic">Tema:</label>
+      <select id="topic" name="topic" required>
+          <option value="">Seleccione un tema</option>
+          <option value="sugerencia">Sugerencia</option>
+          <option value="queja">Consulta</option>
+          <option value="otro">Otro</option>
+      </select>
+      <div id="topicError" class="error"></div>
+      <br />
+      <label for="newsletter">Deseo recibir novedades:</label>
+      <input type="checkbox" id="newsletter" name="newsletter">
+      <br />
+      <br />
+      <p><button type="submit">Enviar</button> </p>
+      
+      <br />
+    </form>
+    
+    <script>
+      const form = document.getElementById('contactForm');
+      const nameInput = document.getElementById('name');
+      const emailInput = document.getElementById('email');
+      const messageInput = document.getElementById('message');
+      const topicSelect = document.getElementById('topic');
+      const nameError = document.getElementById('nameError');
+      const emailError = document.getElementById('emailError');
+      const messageError = document.getElementById('messageError');
+      const topicError = document.getElementById('topicError');
+    
+      form.addEventListener('submit', (e) => {
+          e.preventDefault();
+    
+          let hasError = false;
+    
+          if (nameInput.value === '') {
+              nameError.textContent = 'El nombre es obligatorio.';
+              hasError = true;
+          } else {
+              nameError.textContent = '';
+          }
+    
+          if (emailInput.value === '') {
+              emailError.textContent = 'El correo electrónico es obligatorio.';
+              hasError = true;
+          } else {
+              emailError.textContent = '';
+          }
+    
+          if (messageInput.value === '') {
+              messageError.textContent = 'El mensaje es obligatorio.';
+              hasError = true;
+          } else {
+              messageError.textContent = '';
+          }
+    
+          if (topicSelect.value === '') {
+              topicError.textContent = 'El tema es obligatorio.';
+              hasError = true;
+          } else {
+              topicError.textContent = '';
+          }
+    
+          if (hasError) {
+              return;
+          }
+    
+          // Enviar informacion de servidor
+          const formData = new FormData(form);
+          fetch('/submit-form', {
+              method: 'POST',
+              body: formData
+          })
+         .then(response => response.json())
+         .then(data => {
+              if (data.success) {
+                  // Caso Correcto
+                  alert('Informacion enviada correctamente.');
+                  form.reset();
+              } else {
+                  // Alert caso incorrecto
+                  alert('Error al enviar el formulario.');
+              }
+          })
+         .catch(error => {
+              // Alert caso incorrecto
+              alert('Error al enviar el formulario.');
+          });
+      });
+    </script>
+  </div>
+  </div>
+</body>
+    
